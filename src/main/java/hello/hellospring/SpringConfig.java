@@ -1,29 +1,34 @@
 package hello.hellospring;
-
-
+import hello.hellospring.repository.JdbcMemberRepository;
 import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.repository.MemoryMemberRepository;
 import hello.hellospring.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.sql.DataSource;
 
 
 @Configuration
 public class SpringConfig {
 
-    // Configuration을 통해서 클래스를 설정해주고, Bean 어노테이션을 생성하여 직접 관리하는 구조.
+    private DataSource dataSource;
+
+    @Autowired
+    public SpringConfig(DataSource dataSource){
+        this.dataSource = dataSource;
+    }
 
     @Bean
-    public MemberService memberService(){
-        // MemberService에 MemberRepository의 Bean을 매개변수로 주입.
+    public MemberService memberService() {
         return new MemberService(memberRepository());
     }
-
     @Bean
-    public MemberRepository memberRepository(){
-        return new MemoryMemberRepository();
+    public MemberRepository memberRepository() {
+        //return new MemoryMemberRepository();
+
+        // DB 레퍼지토리로 설정하기
+        return new JdbcMemberRepository(dataSource);
     }
-
-
-
 }
