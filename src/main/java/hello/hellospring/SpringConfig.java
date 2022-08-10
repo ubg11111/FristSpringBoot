@@ -21,19 +21,34 @@ public class SpringConfig {
         this.dataSource = dataSource;
     }*/
 
-    // Jpa사용을 위한 EntityManaget 컨스트럭 설정
+/*    Jpa사용을 위한 EntityManaget 컨스트럭 설정
     private EntityManager em;
 
     @Autowired
     public SpringConfig(EntityManager em) {
         this.em = em;
     }
+ */
+
+
+    // 스프링 Jpa설정 방법.
+
+    private final MemberRepository memberRepository;
+
+
+    @Autowired
+    public SpringConfig(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
 
     @Bean
     public MemberService memberService() {
-        return new MemberService(memberRepository());
+        return new MemberService(memberRepository);
     }
-    @Bean
+
+
+ /* @Bean
     public MemberRepository memberRepository() {
         //return new MemoryMemberRepository();
 
@@ -46,6 +61,11 @@ public class SpringConfig {
 
 
         // Jpa 리포지토리로 설정하기
-        return new JpaMemberRepository(em);
-    }
+        //return new JpaMemberRepository(em);
+
+
+
+        // 스프링Jpa로 리포지토리 설정하기.
+    }*/
+
 }
